@@ -1,94 +1,207 @@
 # Service Marketplace
 
-A backend Service Marketplace platform designed to manage services and categories with secure authentication and authorization.
-
-This project was developed alongside a course focused on learning JWT-based authentication and authorization, with an emphasis on building secure and scalable backend systems using Spring Boot.
-
----
+A React-based frontend application for a service marketplace platform with role-based access control. Users can sign up or sign in to view, manage, and browse service categories based on their role (Admin, Provider, or Consumer).
 
 ## Features
 
-* JWT-based Authentication and Authorization
-* User Sign In and Sign Up functionality
-* Role-based access control
-* Category management (create, view, update)
-* RESTful API design
-
----
+- **Authentication System**: Sign up and sign in functionality with role-based access
+- **Role-Based Access Control**:
+  - **Admin**: Full access to view, create, update, and delete service categories
+  - **Provider/Consumer**: Read-only access to view service categories
+- **Service Categories Management**: Browse and manage service categories with descriptions and icons
+- **Real-time API Integration**: Fetches categories from backend API after authentication
+- **Responsive Design**: Mobile-friendly UI with responsive grid layouts
+- **Session Management**: User sessions persist during the browser session
 
 ## Tech Stack
 
-**Backend**
+- **React**: UI library
+- **Next.js**: React framework with App Router
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first CSS framework
+- **shadcn/ui**: High-quality UI components
+- **Context API**: State management for auth and categories
 
-* Java
-* Spring Boot
-* Spring Security
-* JWT
+## Project Structure
 
-**Database**
+```
+├── app/
+│   ├── layout.tsx           # Root layout with providers
+│   ├── globals.css          # Global styles
+│   └── page.tsx             # Main page (routes to auth or dashboard)
+├── components/
+│   ├── auth-form.tsx        # Sign in/Sign up form
+│   ├── header.tsx           # Navigation header
+│   ├── categories-list.tsx  # Display categories grid
+│   ├── category-form.tsx    # Form to add/edit categories
+│   ├── admin-dashboard.tsx  # Admin panel
+│   └── user-dashboard.tsx   # User/Provider panel
+├── contexts/
+│   ├── auth-context.tsx     # Authentication state management
+│   └── categories-context.tsx # Categories state management
+└── README.md                # This file
+```
 
-* H2 Database (in-memory)
+## Getting Started
 
-**Build Tool**
+### Prerequisites
 
-* Maven
+- Node.js 18+ 
+- npm, yarn, or pnpm package manager
 
----
+### Installation
 
-## Setup and Installation
-
-### 1. Clone the repository
-
+1. Clone the repository:
 ```bash
-git clone https://github.com/KalanaNilwakka/Service-Marketplace.git
-cd Service-Marketplace
+git clone <repository-url>
+cd service-marketplace
 ```
 
-### 2. Build the project
-
+2. Install dependencies:
 ```bash
-mvn clean install
+npm install
+# or
+pnpm install
+# or
+yarn install
 ```
 
-### 3. Run the application
+3. Set up environment variables (if needed):
+Create a `.env.local` file in the root directory (currently using localhost API)
 
+### Running the Application
+
+Start the development server:
 ```bash
-mvn spring-boot:run
+npm run dev
+# or
+pnpm dev
+# or
+yarn dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## Database
+## API Integration
 
-This project uses the H2 in-memory database for development and testing purposes.
+The application fetches service categories from your backend API:
 
-You can access the H2 console (if enabled) via:
+**Endpoint**: `GET http://localhost:8080/api/v1/categories`
 
+**Headers Required**:
+- `Authorization: Bearer {userId}`
+
+**Expected Response**:
+```json
+[
+  {
+    "categoryId": 1,
+    "name": "Home Services",
+    "description": "Cleaning, plumbing, electrical work",
+    "icon": "home",
+    "createdAt": "2026-04-27T22:55:05.413316",
+    "updatedAt": "2026-04-27T22:55:05.413316"
+  }
+]
 ```
-http://localhost:8080/h2-console
-```
 
----
+**Icon Mapping**:
+The following icon keys are mapped to emojis:
+- `home` → 🏠
+- `professional` → 💼
+- `health` → 💪
+- `education` → 📚
+- `tech` → 💻
+- `transportation` → 🚗
+- `food` → 🍽️
+- `arts` → 🎨
+- `maintenance` → 🔧
+- `communication` → 📱
+- `healthcare` → 🏥
+- `travel` → ✈️
 
-## API Endpoints
+## Authentication
 
-### Authentication
+Categories are only fetched after the user successfully logs in. The authentication flow:
 
-* POST `api/v1/noauth/signin`
-* POST `api/v1/noauth/signup`
+1. User lands on the sign in/sign up page
+2. User authenticates with email and password
+3. User selects a role (Admin, Provider, or Consumer)
+4. User is redirected to their dashboard
+5. Categories are fetched from the API with authorization
 
-### Categories
+**Note**: The current implementation uses session storage for demo purposes. For production, implement a proper backend authentication system with JWT tokens or session management.
 
-* GET `api/v1/categories`
-* POST `api/v1/categories`
-* PUT `api/v1/categories/{categoryId}`
+## Usage
 
----
+### For Admins
 
-## Notes
+1. Sign in with an admin account
+2. Navigate to the Admin Dashboard
+3. View all service categories in a responsive grid
+4. Add new categories using the "Add Category" form
+5. Edit existing categories by clicking the edit icon
 
-* This project is intended as a learning implementation of JWT authentication and authorization.
-* It can be extended further with additional modules such as booking, payments, and microservices architecture.
+### For Providers/Consumers
 
+1. Sign in with a provider or consumer account
+2. View all available service categories
+3. Browse through categories to see available services
+4. No editing or adding permissions (read-only access)
 
+## Components
 
+### AuthForm
+Handles user authentication with email, password, and role selection. Supports both sign in and sign up modes.
+
+### Header
+Navigation bar displaying the website name and user logout functionality.
+
+### CategoriesList
+Displays service categories in a responsive grid layout. Shows edit/delete buttons for admins only.
+
+### CategoryForm
+Form for creating and editing service categories. Admin-only functionality.
+
+### AdminDashboard
+Main panel for admins to manage service categories.
+
+### UserDashboard
+Display panel for providers and consumers to view categories.
+
+## Context Providers
+
+### AuthContext
+Manages user authentication state including:
+- Current user information
+- Login/logout functionality
+- User role management
+
+### CategoriesContext
+Manages service categories state including:
+- Fetching categories from API
+- Adding new categories
+- Updating existing categories
+- Deleting categories
+- Loading state
+
+## Browser Compatibility
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Future Enhancements
+
+- Implement proper backend authentication with JWT tokens
+- Add service listings and search functionality
+- Implement user profiles and ratings
+- Add service booking system
+- Implement real-time notifications
+- Add payment processing integration
+- Implement advanced filtering and sorting
+
+## Support
+
+For issues or questions, please contact the development team or create an issue in the repository.
