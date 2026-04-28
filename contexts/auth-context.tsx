@@ -23,17 +23,10 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Mock users database (in a real app, this would be a database)
-const mockUsers: (User & { password: string })[] = [
-  { id: "1", email: "admin@example.com", password: "admin123", firstName: "Admin", lastName: "User", roles: ["ROLE_ADMIN"] },
-  { id: "2", email: "provider@example.com", password: "provider123", firstName: "Service", lastName: "Provider", roles: ["ROLE_PROVIDER"] },
-  { id: "3", email: "consumer@example.com", password: "consumer123", firstName: "Consumer", lastName: "User", roles: ["ROLE_CONSUMER"] },
-]
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [users, setUsers] = useState(mockUsers)
+  const [users, setUsers] = useState()
 
   useEffect(() => {
     // Check for existing session

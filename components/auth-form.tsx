@@ -141,14 +141,7 @@ export function AuthForm() {
               {isLogin ? "Sign up" : "Sign in"}
             </button>
           </p>
-          {isLogin && (
-            <div className="text-xs text-muted-foreground text-center space-y-1">
-              <p className="font-medium">Demo Accounts:</p>
-              <p>Admin: admin@example.com / admin123</p>
-              <p>Provider: provider@example.com / provider123</p>
-              <p>Consumer: consumer@example.com / consumer123</p>
-            </div>
-          )}
+          {isLogin}
         </CardFooter>
       </form>
     </Card>
